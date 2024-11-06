@@ -1,0 +1,15 @@
+﻿@inherits Asset
+@code 
+{
+    [Parameter] public virtual string Src { get; set; } = string.Empty;
+    [Parameter] public bool Loop { get; set; } = false;
+}
+@{
+    var attributes = new Dictionary<string, object>
+    {
+        ["src"] = Src,
+        ["type"] = "audio/mpeg"
+    };
+    if (Loop) attributes.Add("loop", true);
+}
+<audio id="@Id" @attributes="attributes"></audio>

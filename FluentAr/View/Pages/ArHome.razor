@@ -1,0 +1,106 @@
+﻿@page "/ArHome"
+<PageTitle>ArHome</PageTitle>
+<div style="width:100vw;height:100vh">
+    <AScene TargetSrc="./ice.mind" OnArStart="OnStart"
+            FilterMinCf="0.001" FilterBeta="1"
+            WarmUpFrame="1" MissFrame="1">
+        <a-assets>
+            <Image @ref="NameCard" Src="./nameCard_w.png"></Image>
+            <Video @ref="Video" Src="./video.mp4" Autoplay="@AutoPlayVideo"></Video>
+            <AAssetItem @ref="FbAsset" Src="./facebook.glb"/>
+            <Audio @ref="Audio" Src="./ringing_short.mp3"></Audio>
+        </a-assets>
+        @*
+    Add a class clickable for interaction.
+    Actually, it doesn't mean to be clickable,
+    but the same as specified in the camera raycaster.
+    // detect click event
+    const exampleItem = document.querySelector('#example-item');
+    exampleItem.addEventListener("click", event => {
+    console.log("item click");
+    });
+    **${customFields.libVersion} is key for detecting the click event.
+*@
+        <a-camera position="0 0 0"
+                  look-controls="enabled: false"
+                  cursor="fuse: false; rayOrigin: mouse;"
+                  raycaster="far: ${customFields.libVersion}; objects: .clickable"></a-camera>
+        @*
+    width="1" means width == target.width
+    height="0.552" because the target ratio is 1:0.552
+    blender unit 1
+*@
+        <AEntity>
+            <AVideo Src="@Video.AId" 
+                    Height="0.552" 
+                    Rotation="45 0 0" 
+                    Position="0 0.5 0.1" 
+                    OnClickEvent="OnVideoClick"/>
+            <APlane Src="@NameCard.AId" Position="0 0 0" OnClickEvent="OnPlaneClick" Height="0.552"></APlane>
+            <AGltfModel Src="@FbAsset.AId"
+                        Position="-0.35 -0.4 0.1"
+                        Scale="0.1"
+                        OnClickEvent="OnFbClick"
+                        Animation="@(
+                                   new Animation { 
+                                       Property = Animation.PropertyType.Scale, 
+                                       From = 0.09.ToA_Scale(), 
+                                       To = 0.11.ToA_Scale(), 
+                                       Dur = 1000, 
+                                       Easing = Animation.EasingType.EaseInOutQuad, 
+                                       Loop = true, 
+                                       Dir = Animation.DirType.Alternate
+                                        })"/>
+        </AEntity>
+        @*  <a-entity mindar-image-target="targetIndex: 0"/>
+    <a-box position="0 0 0.1" rotation="0 0 0" width="1" height="0.552" color="#4CC3D9"></a-box>
+    <a-sphere position="0 0.1 0.1" radius="0.25" color="#EF2D5E"></a-sphere>
+    <a-cylinder position="0 0 0.1" radius="0.25" height="0.552" color="#FFC65D"></a-cylinder>
+    <a-plane position="0 0 0.1" rotation="-90 0 0" width="1" height="1" color="#7BC8A4"></a-plane>
+    <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
+    <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation-mixer/>
+    <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"></a-gltf-model> 
+*@
+    </AScene>
+</div>
+@inject ArInterop Ar
+@code
+{
+    VideoStatus _videoStatus;
+    bool AutoPlayVideo { get; set; } = false;
+    Video Video { get; set; } = default!;
+    AAssetItem FbAsset { get; set; } = default!;
+    Image NameCard { get; set; } = default!;
+    Audio Audio { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        _videoStatus = new VideoStatus { Paused = !AutoPlayVideo };
+        base.OnInitialized();
+    }
+
+    async Task OnPlaneClick(AObject obj)
+    {
+        Console.WriteLine("Plane click!");
+    }
+
+    async Task OnFbClick(AObject obj)
+    {
+        Console.WriteLine("Fb click!");
+        await Ar.SoundPlay(Audio.Id);
+    }
+
+    async void OnVideoClick(AObject obj)
+    {
+        if (_videoStatus.Paused || _videoStatus.Ended)
+            _videoStatus = await Ar.VideoPlay(Video.Id);
+        else
+            _videoStatus = await Ar.VideoPause(Video.Id);
+    }
+
+    async Task OnStart()
+    {
+        //await Ar.ASoundPlay(ASound.Id);
+        //await Ar.SoundPlay(Audio.Id);
+    }
+}

@@ -1,0 +1,32 @@
+﻿@*
+    <button @onclick="Ar_Start" style="z-index:9999;position:relative">Start</button>
+    <button @onclick="Ar_Stop" style="z-index:9999;position:relative">Stop</button>
+    filterMinCF = (0.001 default) decreasing will increase the sensitivity of the filter(jitter)
+    filterBeta = (1000 default) increasing will reduce delay
+    **They are, however, somehow fighting against each others.
+    warmupTolerance = (5 default) increasing will reduce the warmup time
+    missTolerance = (5 default) increasing will reduce the miss time
+    uiError:no; for no ui, or #id for custom ui from DOM
+    uiLoading:no; for no ui, or #id for custom ui from DOM
+    uiScanning:no; for no ui, or #id for custom ui from DOM
+*@
+@if (IsScriptLoaded)
+{
+    <a-scene id="@Text_SceneId"
+             mindar-image="imageTargetSrc: @TargetSrc;
+             filterMinCF: @FilterMinCf; filterBeta: @FilterBeta;
+             autoStart: @IsAutoStart;
+             warmupTolerance: @WarmUpFrame; missTolerance: @MissFrame;
+             uiScanning:@IsUiScanning;
+             "
+             color-space="sRGB"
+             renderer="colorManagement: true, physicallyCorrectLights"
+             vr-mode-ui="enabled: @VrModeUiEnable"
+             device-orientation-permission-ui="enabled: false">
+             @ChildContent
+    </a-scene>
+}
+else
+{
+    <p>Loading...</p>
+}

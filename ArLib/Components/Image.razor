@@ -1,0 +1,6 @@
+﻿@inherits Asset
+@code 
+{
+    [Parameter] public virtual string Src { get; set; } = string.Empty;
+}
+<img id="@Id" src="@Src" hidden alt="image"/>

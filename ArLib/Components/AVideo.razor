@@ -1,0 +1,15 @@
+﻿@inherits AObject
+@code 
+{
+    [Parameter] public virtual string Src { get; set; } = string.Empty;
+}
+@{
+    Dictionary<string, object> avAttrib = new Dictionary<string, object>();
+    avAttrib.Add("src", Src);
+    avAttrib.Add("position", Position);
+    avAttrib.Add("rotation", Rotation);
+    avAttrib.Add("height", Height);
+    avAttrib.Add("width", Width);
+    avAttrib.Add("scale", Scale.ToA_Scale());
+}
+<a-video id="@Id" @attributes="avAttrib" shadow="cast:true" />

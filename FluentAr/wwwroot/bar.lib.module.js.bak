@@ -1,0 +1,65 @@
+﻿// 动态加载外部库的函数
+function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = callback;  // 当脚本加载完成时执行回调
+    document.head.appendChild(script);
+}
+
+// 加载 A-Frame 和 MindAR
+function loadLibraries() {
+    return new Promise((resolve, reject) => {
+        loadScript('https://aframe.io/releases/1.6.0/aframe.min.js', function () {
+            console.log("A-Frame 已加载完成");
+            loadScript('https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js', function () {
+                console.log("MindAR 已加载完成");
+                initializeARSystem();
+                resolve();  // 表示库加载完成
+            });
+        });
+    });
+}
+
+// 初始化 AR 系统并封装方法
+function initializeARSystem() {
+    const sceneEl = document.querySelector('a-scene');
+    let arSystem;
+
+    sceneEl.addEventListener('loaded', function () {
+        arSystem = sceneEl.systems['mindar-image-system'];
+
+        if (!arSystem) {
+            console.error("arSystem 未正确初始化");
+            return;
+        }
+
+        console.log("AR 系统初始化完成");
+
+        // 公开封装的接口方法
+        window.myARLib = {
+            startAR: function () {
+                try {
+                    if (arSystem) {
+                        if (arSystem.showLoading) {
+                            arSystem.showLoading();  // 确保 showLoading 存在
+                        }
+                        arSystem.start();
+                        console.log("AR 启动");
+                    }
+                } catch (err) {
+                    console.error("AR 启动时发生错误:", err);
+                }
+            },
+            stopAR: function () {
+                try {
+                    if (arSystem) {
+                        arSystem.stop();
+                        console.log("AR 停止");
+                    }
+                } catch (err) {
+                    console.error("AR 停止时发生错误:", err);
+                }
+            }
+        };
+    });
+}

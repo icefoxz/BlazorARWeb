@@ -1,0 +1,16 @@
+﻿@inherits Asset
+@{
+    Dictionary<string,object> vAttrib = new Dictionary<string, object>();
+    vAttrib.Add("src", Src);
+    vAttrib.Add("crossorigin", "anonymous");
+    vAttrib.Add("hidden", true);
+    vAttrib.Add("loop", Loop.ToA_Text());
+    if (Autoplay) vAttrib.Add("autoplay", true);
+}
+@code 
+{
+    [Parameter] public string Src { get; set; } = string.Empty;
+    [Parameter] public bool Loop { get; set; } = true;
+    [Parameter] public bool Autoplay { get; set; } = true;
+}
+<video id="@Id" @attributes="vAttrib"></video>

@@ -1,0 +1,6 @@
+﻿@inherits ComponentBase
+@code 
+{
+    [Parameter]public virtual string Id { get; set; } = AObject.GenerateAlphaPrefixedGuid();
+    public string AId => $"#{Id}";
+}

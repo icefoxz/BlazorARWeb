@@ -1,0 +1,49 @@
+﻿<FluentGrid Spacing="Spacing">
+    <FluentGridItem>
+        <FluentButton IconEnd="@(new Icons.Filled.Size24.SubtractSquare())" OnClick="OnSubtract" Style="@ButtonStyle"></FluentButton>
+    </FluentGridItem>
+    <FluentGridItem>
+        <FluentNumberField Value="Number" TValue="int" MaxLength="MaxLength" Style="@NumberFieldStyle"
+                           ValueChanged="OnValueChanged"
+                           Min="@(Min.ToString())" Max="@(Max.ToString())"
+                           HideStep="true">
+        </FluentNumberField>
+    </FluentGridItem>
+    <FluentGridItem>
+        <FluentButton IconEnd="@(new Icons.Filled.Size24.AddSquare())" OnClick="OnAdd" Style="@ButtonStyle"></FluentButton>
+    </FluentGridItem>
+</FluentGrid>
+@code {
+    [Parameter] public int Min { get; set; }
+    [Parameter] public int Max { get; set; } = 999;
+    [Parameter] public string? NumberFieldStyle { get; set; }
+    [Parameter] public string? ButtonStyle { get; set; }
+    [Parameter] public int Spacing { get; set; }
+    [Parameter] public EventCallback<int> OnUpdate { get; set; }
+    [Parameter] public int Number { get; set; }
+    public int MaxLength => Max < 0 ? 1 : Max.ToString().Length;
+
+    protected override void OnInitialized()
+    {
+        if (Number == default) Number = Min > 0 ? Min : 0;
+        base.OnInitialized();
+    }
+
+    private Task OnAdd()
+    {
+        Number = Math.Clamp(++Number, Min, Max);
+        return OnUpdate.InvokeAsync(Number);
+    }
+
+    private Task OnSubtract()
+    {
+        Number = Math.Clamp(--Number, Min, Max);
+        return OnUpdate.InvokeAsync(Number);
+    }
+
+    private Task OnValueChanged(int value)
+    {
+        Number = Math.Clamp(value, Min, Max);
+        return OnUpdate.InvokeAsync(Number);
+    }
+}

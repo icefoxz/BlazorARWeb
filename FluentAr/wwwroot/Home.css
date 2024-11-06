@@ -1,0 +1,254 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+*{
+     font-family: 'Roboto', sans-serif;
+     margin:0; padding:0;
+     box-sizing:border-box;
+     outline:none; border:none;
+     text-decoration:none;
+     text-transform:capitalize;
+     transition: .2s linear;
+}
+
+html{
+     font-size:62.5%;
+     overflow-x:hidden;
+     scroll-padding-top:9rem;
+     scroll-behavior:smooth;
+}
+html::-webkit-scrollbar{
+     width:.8rem;
+}
+
+html::-webkit-scrollbar-track{
+     background:transparent;
+}
+
+html::-webkit-scrollbar-thumb{
+     background:#fff;
+     border-radius:5rem;
+}
+body{
+     background:white;
+}
+
+section{
+     padding:2rem 7%;
+}
+
+.heading{
+     text-align: center;
+     color:black;
+     text-transform:uppercase;
+     padding-bottom:3.5rem;
+     font-size:4rem;
+}
+.heading span{
+     text-transform:uppercase;
+}
+
+.header{
+     background:grey;
+     display:flex;
+     align-items:center;
+     justify-content:space-between;
+     padding:1.5rem 7%;
+     border-bottom:#fff;
+     position:fixed;
+     top:0;left:0;right:0;
+     z-index:1000;
+}
+.header .logo img{
+     height:6rem;
+}
+.header .navbar a{
+     margin:0 1rem;
+     font-size:1.6rem;
+     color:#fff;
+     text-decoration:none;
+}
+.header .navbar a:hover{
+     color:cyan;
+     border-bottom:.1rem solid cyan;
+     padding-bottom:.5rem;
+}
+.header .icons div{
+     color:#fff;
+     cursor:pointer;
+     font-size: 2.5rem;
+     margin-left: 2rem;
+}
+.header .icons div:hover{
+     color:cyan;
+}
+.header .icons a{
+     text-transform:uppercase;
+     color:#fff;
+     font-size:2rem;
+     text-decoration:none;
+}
+
+#menu-btn{
+     display:none;
+}
+.home{
+     min-height:100vh;
+     display:flex;
+     align-items:center;
+     background:url('Media/wallpaper.jpg') no-repeat;
+     background-size:cover;
+     background-position:center;
+}
+.home .content{
+     max-width:60rem;
+}
+.home .content h2{
+     font-size:6rem;
+     text-transform: uppercase;
+     color:black;
+}
+.home .content p{
+     font-size:2rem;
+     line-height: 1.8;
+     padding:1rem 0;
+     color:#000;
+}
+.about{
+     background:#ccc;
+}
+.about .row{
+     display:flex;
+     align-items:center;
+     background:var(--black);
+     flex-wrap:wrap;
+}
+
+.about .row .image{
+     flex:1 1 45rem;
+}
+
+.about .row .image img{
+     width: 100%;
+}
+
+.about .row .content{
+     flex:1 1 45rem;
+     padding:2rem;
+}
+
+.about .row .content h3{
+     font-size:3rem;
+     color:black;
+}
+.about .row .content p{
+     font-size:1.6rem;
+     color:black;
+     padding:1rem 0;
+     line-height:1.8;
+}
+
+.services .box-container{
+     display:grid;
+     grid-template-columns:repeat(auto-fit, minmax(30rem, 1fr));
+     gap:2rem;
+}
+
+.services .box-container .box{
+     padding:3rem 2rem;
+     text-align:center;
+     border:.1rem solid black;
+}
+.services .box-container .box:hover{
+     background:gold;
+}
+.services .box-container .box img{
+     height:25rem;
+     border-radius:50%;
+}
+.services .box-container .box img:hover{
+     transform:scale(1.2);
+}
+.services .box-container .box p{
+     color:black;
+     font-size:2.5rem;
+     padding:2rem;
+}
+.contact{
+     background:grey;
+}
+.contact .box-container{
+     display: grid;
+     grid-template-columns:repeat(auto-fit, minmax(30rem, 1fr));
+     gap:1.5rem;
+}
+.contact .box-container .box .shareBox{
+     display:flex;
+     align-items:center;
+     margin-top:2rem;
+     margin-bottom:2rem;
+}
+.contact .box-container .box .shareBox a{
+     padding-left:1.5rem;
+     font-size:1.5rem;
+     text-decoration:none;
+     color:white;
+}
+
+.contact .box-container .box .map{
+     flex:1 1 45rem;
+     width:100%;
+     object-fit:cover;
+}
+.contact .box-container .box h3{
+     color:white;
+     font-size:3rem;
+}
+
+.contact .box-container .box b{
+     color:cyan;
+     font-size:2rem;
+     line-height:2rem;
+}
+.contact .box-container .box p{
+     color:white;
+     font-size:1.5rem;
+     line-height:2rem;
+     font-weight:lighter;
+}
+
+@media (max-width:991px){
+     html{
+          font-size:55%;
+     }
+     .header{
+          padding:1.5rem 2rem;
+     }
+     section{
+          padding:2rem;
+     }
+}
+@media (max-width:768px){
+     .header .navbar a{
+          color:white;
+          display: block;
+          font-size: 2rem;
+     }
+     .home{
+          background-position:left;
+          justify-content:center;
+          text-align:center;
+     }
+     .home .content h3{
+          font-size: 4.5rem;
+     }
+     
+     .home .content p{
+          font-size: 2rem;
+     }
+}
+@media (max-width:450px){
+     
+     html{
+          font-size: 50%;
+     }
+}

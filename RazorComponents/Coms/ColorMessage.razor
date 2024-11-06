@@ -1,0 +1,54 @@
+﻿@if (!string.IsNullOrWhiteSpace(Text))
+{
+    <h2 class="badge alert-@_messageColor">@Text</h2>
+}
+
+@code {
+    const string Primary = "primary";
+    const string Danger = "danger";
+    const string Success = "success";
+    const string Warning = "warning";
+    const string Info = "info";
+    const string Light = "light";
+    const string Dark = "dark";
+    const string Secondary = "secondary";
+    private string _messageColor = Primary;
+
+    public enum Colors
+    {
+        Primary,
+        Danger,
+        Success,
+        Warning,
+        Info,
+        Light,
+        Dark,
+        Secondary
+    }
+
+    [Parameter]public string? Text { get; set; }
+    [Parameter]public Colors Color { get; set; } = Colors.Primary;
+
+    public void SetMessage(string message, Colors color = Colors.Primary)
+    {
+        var c = color switch
+        {
+            Colors.Primary => Primary,
+            Colors.Danger => Danger,
+            Colors.Success => Success,
+            Colors.Warning => Warning,
+            Colors.Info => Info,
+            Colors.Light => Light,
+            Colors.Dark => Dark,
+            Colors.Secondary => Secondary,
+            _ => Primary
+        };
+        SetMessage(message, c);
+    }
+    void SetMessage(string message, string? color = null)
+    {
+        Text = message;
+        _messageColor = color ?? Primary;
+        StateHasChanged();
+    }
+}

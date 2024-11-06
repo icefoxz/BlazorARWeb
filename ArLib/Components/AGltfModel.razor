@@ -1,0 +1,31 @@
+﻿<!-- AGltfModel.razor -->
+@inherits AObject
+
+@code 
+{
+    [Parameter] public string Src { get; set; } = default!;
+    [Parameter] public double HeightRatio { get; set; } = 0.552;
+    [Parameter] public Animation? Animation { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Height = GetRatio(Width, HeightRatio);
+    }
+}
+@{
+    var attributes = new Dictionary<string, object>
+    {
+        { "src", Src }, 
+        { "position", Position }, 
+        { "rotation", Rotation }, 
+        { "scale", Scale.ToA_Scale() },
+    };
+    attributes.ClassResolver(Class);
+    attributes.AnimResolver(Animation);
+}
+<a-gltf-model id="@Id"
+              width="@Width"
+              height="@Height"
+              @attributes="attributes">
+    @ChildContent
+</a-gltf-model>

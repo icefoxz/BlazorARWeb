@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="FluentComs\FloattingButton.razor" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.0" />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.10.0" />
+    <PackageReference Include="Radzen.Blazor" Version="5.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Coms\ImageReplace.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="FluentComs\NumberStepper.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="FluentComs\FloattingButton.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Coms\AppComponent.razor" />
+    <_ContentIncludedByDefault Remove="FluentComs\FloattingButton.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Coms\AppComponent.razor" />
+    <None Include="Coms\ThemeManagement.razor" />
+    <None Include="FluentComs\FloattingButton.razor" />
+    <None Include="wwwroot\JsInterop.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Coms\AppComponent.razor" />
+  </ItemGroup>
+
+</Project>

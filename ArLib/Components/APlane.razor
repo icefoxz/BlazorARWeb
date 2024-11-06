@@ -1,0 +1,18 @@
+﻿@inherits ArLib.Components.AObject
+
+<a-plane id="@Id"
+         position="@Position"
+         rotation="@Rotation"
+         scale="@Scale.ToA_Scale()"
+         color="@Color"
+         src="@Src"
+         width="@Width"
+         height="@Height"
+>
+    @ChildContent
+</a-plane>
+
+@code 
+{
+    [Parameter] public string Src { get; set; } = string.Empty;
+}

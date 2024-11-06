@@ -1,0 +1,13 @@
+﻿@inherits AObject
+
+@code {
+    [Parameter] public double Radius { get; set; } = 1;
+}
+
+<a-sphere id="@Id"
+          position="@Position"
+          rotation="@Rotation"
+          radius="@Radius"
+          color="@Color">
+    @ChildContent
+</a-sphere>

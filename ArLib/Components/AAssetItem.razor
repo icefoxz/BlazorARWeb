@@ -1,0 +1,6 @@
+﻿@inherits Asset
+@code 
+{
+    [Parameter]public virtual string Src { get; set; } = string.Empty;
+}
+<a-asset-item id="@Id" src="@Src"></a-asset-item>

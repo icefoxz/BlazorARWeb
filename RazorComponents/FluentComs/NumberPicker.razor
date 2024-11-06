@@ -1,0 +1,16 @@
+﻿<FluentStack Class="rz-pt-1 rz-px-1" Style="background: var(--cc-base-400); padding: 1px" HorizontalAlignment="HorizontalAlignment.End" VerticalAlignment="VerticalAlignment.Top">
+    <NumberStepper Min="Min" Max="Max" Number="Number" Spacing="1" NumberFieldStyle="width: 50px"
+                   OnUpdate="OnNumberUpdate"></NumberStepper>
+    <FluentButton Appearance="Appearance.Neutral" IconEnd="@(new Icons.Regular.Size24.Cart())" Style="width: 100px" OnClick="@(()=>OnCartClick.InvokeAsync(Number))"></FluentButton>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Filled.Size16.MoneyHand())" Style="width: 100px" OnClick="@(()=>OnPaymentClick.InvokeAsync(Number))"></FluentButton>
+</FluentStack>
+@code
+{
+    [Parameter] public int Min { get; set; }
+    [Parameter] public int Max { get; set; } = 999;
+    [Parameter] public EventCallback<int> OnCartClick { get; set; }
+    [Parameter] public EventCallback<int> OnPaymentClick { get; set; }
+    public int Number { get; set; } = 1;
+
+    private void OnNumberUpdate(int number) => Number = number;
+}

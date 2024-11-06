@@ -1,0 +1,78 @@
+﻿@using RazorComponents
+@using Orientation = Microsoft.FluentUI.AspNetCore.Components.Orientation
+<style>
+    .stack-vertical {
+        column-gap: 0px !important;
+        row-gap: 0px !important;
+    }
+    .inputfile-progress {
+        padding: 0 !important;
+        height: 15px !important;
+    }
+</style>
+<FluentInputFile Id="@InputFileElementId"
+                 Mode="InputFileMode.SaveToTemporaryFolder"
+                 Class="rz-p-0"
+                 Multiple="MultipleFiles"
+                 MaximumFileCount="1"
+                 MaximumFileSize="MaxFileSize"
+                 Accept="image/*"
+                 @bind-ProgressPercent="@ImageProgressPercent"
+                 OnCompleted="@OnCompletedAsync"
+                 Style="border: 1px dashed var(--accent-fill-rest);">
+    <ChildContent>
+        <label for="@InputFileElementId" class="rz-p-0" >
+            <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center" VerticalAlignment="VerticalAlignment.Center">
+                <FluentIcon Value="@(new Icons.Regular.Size24.ArrowDown())" />
+                @if (CustomPreviewImage || !HasReplaceImg)
+                {
+                    <img src="@DefaultImageUrl" height="@ImageHeight" width="@ImageWidth" style="position: center; object-fit: contain" alt="" />
+                }
+                else if(!CustomPreviewImage)
+                {
+                    <img id="@PreviewImageElementId" height="@ImageHeight" width="@ImageWidth" style="position: center; object-fit: contain" alt="" />
+                }
+                <p>
+                    Drag or <b>browse</b> here.
+                </p>
+            </FluentStack>
+        </label>
+    </ChildContent>
+</FluentInputFile>
+
+@code {
+    /// <summary>
+    /// Must be unique for each instance of the component. because js interop will use this id to get the file input element.
+    /// </summary>
+    [Parameter] public string InputFileElementId { get; set; } = "my-file-uploader";
+    /// <summary>
+    /// Must be unique for each instance of the component. because js interop will use this id to get the image element.
+    /// </summary>
+    [Parameter] public string PreviewImageElementId { get; set; } = "my-image-preview";
+    [Parameter] public string? DefaultImageUrl { get; set; }
+    [Parameter] public string ImageWidth { get; set; } = "200px";
+    [Parameter] public string ImageHeight { get; set; } = "200px";
+    [Parameter] public int MaxFileSize { get; set; } = 10485760;// 10MB
+    [Parameter] public bool MultipleFiles { get; set; } = false;
+    [Parameter] public EventCallback<Stream?> OnImageChanged { get; set; }
+    [Parameter] public bool CustomPreviewImage { get; set; }
+    [Parameter] public int ImageProgressPercent { get; set; }
+    [Inject] private JsInterop JsInterop { get; set; } = default!;
+    public bool HasReplaceImg { get; private set; }
+
+    private async Task OnCompletedAsync(IEnumerable<FluentInputFileEventArgs> array)
+    {
+        // var files = array.ToArray();
+        // _file = files.Length > 0 ? files[0] : null;
+        HasReplaceImg = true;
+        // Wait 1 second before to reset the progress bar.
+        var imageData = await JsInterop.PreviewImage(InputFileElementId, PreviewImageElementId);
+        await OnImageChanged.InvokeAsync(imageData);
+        StateHasChanged();
+    }
+
+    public void Reset()
+    {
+        HasReplaceImg = false;
+    }
+}

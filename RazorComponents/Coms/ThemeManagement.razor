@@ -1,0 +1,32 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Extensions
+
+<FluentDesignTheme @bind-Mode="ThemeMode" @bind-OfficeColor="ThemeOfficeColor" />
+@if (EnableTheme)
+{
+    <FluentSelect Label="Theme"
+                  Style="background: aliceblue"
+                  Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor?)i))"
+                  Width="150px"
+                  @bind-SelectedOption="ThemeOfficeColor"
+                  Multiple="false">
+        <OptionTemplate>
+            <FluentStack>
+                <FluentIcon Icon="Icons.Filled.Size20.RectangleLandscape"
+                            Color="Color.Custom"
+                            CustomColor="@(context.ToAttributeValue() != "default" ? context.ToAttributeValue() : "#036ac4")"/>
+                <FluentLabel Class="cc-text-caption">@context</FluentLabel>
+            </FluentStack>
+        </OptionTemplate>
+    </FluentSelect>
+}
+
+@code 
+{
+    public bool EnableTheme { get; set; } = false;
+    public DesignThemeModes ThemeMode { get; set; } = DesignThemeModes.Light;
+    public OfficeColor? ThemeOfficeColor { get; set; } = OfficeColor.Access;
+    private void SelectedOptionChanged(OfficeColor? obj)
+    {
+        ThemeOfficeColor = obj;
+    }
+}

@@ -1,0 +1,71 @@
+﻿@using Microsoft.JSInterop
+<div class="row">
+    <h3>生成 .mind 文件</h3>
+</div>
+<div class="row">
+    <input type="file" id="imageInput" multiple @ref="inputFile"/>
+    <button @onclick="OnGenerateClicked">生成 .mind 文件</button>
+</div>
+<div class="row">
+    <!-- 预留的 img 标签 -->
+    <img id="previewImage" style="max-width: 512px;" alt="预览图像"/>
+</div>
+@if(Progress > 0)
+{
+    <h4>编译进度: @Progress%</h4>
+    <progress value="@Progress" max="100"></progress>
+}
+<p>@StatusMessage</p>
+
+@inject ArInterop ArInterop
+@code 
+{
+    private ElementReference inputFile;
+    private string StatusMessage = "";
+    private double Progress { get; set; }
+    DotNetObjectReference<GenMind> objRef;
+    protected override void OnInitialized()
+    {
+        objRef = DotNetObjectReference.Create(this);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // 引入 JavaScript 文件或者直接在这里注入 JS 逻辑
+            await ArInterop.InitializeImagePreview();
+        }
+    }
+    async Task OnGenerateClicked()
+    {
+        StatusMessage = "正在生成 .mind 文件，请稍候...";
+        Progress = 0;
+        StateHasChanged(); // 刷新 UI
+        var fileCount = await ArInterop.GetFileCount(inputFile);
+
+        if (fileCount == 0)
+        {
+            StatusMessage = "请先选择图像文件。";
+            return;
+        }
+        StatusMessage = "正在生成 .mind 文件，请稍候...";
+        var mindFileData = await ArInterop.GenerateMindFileAsync(inputFile, objRef);
+        StatusMessage = ".mind 文件生成成功！";
+        // 提供下载链接，供用户保存 .mind 文件
+        var base64Data = Convert.ToBase64String(mindFileData);
+        var dataUrl = $"data:application/octet-stream;base64,{base64Data}";
+        await ArInterop.DownloadMindFile(dataUrl);
+        StateHasChanged(); // 刷新 UI
+    }
+    [JSInvokable("UpdateProgress")]
+    public void UpdateProgress(double progress)
+    {
+        Progress = progress;
+        StateHasChanged(); // 刷新 UI
+    }
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+    }
+}

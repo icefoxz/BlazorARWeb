@@ -1,0 +1,26 @@
+﻿<!-- AEntity.razor -->
+@inherits AObject
+@* 定义参数 *@
+@{
+    var attributes = new Dictionary<string, object>
+    {
+        { "id", Id },
+        { "src", Src },
+        { "position", Position },
+        { "rotation", Rotation },
+        { "scale", Scale.ToA_Scale() },
+        { "mindar-image-target", ImageTarget }
+    };
+}
+@* 渲染 <a-entity> 标签 *@
+<a-entity @attributes="attributes"
+          color-space="sRGB" 
+          renderer="colorManagement: true, physicallyCorrectLights">
+    @ChildContent
+</a-entity>
+@code {
+    const string Target_Index = "targetIndex: ";
+    [Parameter] public string Src { get; set; } = string.Empty;
+    [Parameter] public int TargetIndex { get; set; } = 0;
+    string ImageTarget => Target_Index + TargetIndex;
+}

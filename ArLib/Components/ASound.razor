@@ -1,0 +1,20 @@
+﻿@inherits Asset
+@code {
+    [Parameter] public string Src { get; set; } = string.Empty;
+    [Parameter] public bool Loop { get; set; } = true;
+    [Parameter] public bool AutoPlay { get; set; } = true;
+    [Parameter] public double Volume { get; set; } = 0.5f;
+}
+@{
+    // todo: do not use ASound! because it will cause three.js exception on volume
+    // var attributes = new Dictionary<string, object>
+    // {
+    //     { "src", Src },
+    //     { "autoplay", AutoPlay.ToA_Text() },
+    //     { "volume", Volume },
+    //     { "loop", Loop.ToA_Text() }
+    // };
+    var sound = $"src:{Src};autoplay:{AutoPlay.ToA_Text()};loop:{Loop.ToA_Text()};volume:{Volume};preload:auto";
+}
+@* <a-sound id="@Id" @attributes="attributes"></a-sound> *@
+<a-entity id="@Id" sound="@sound"></a-entity>

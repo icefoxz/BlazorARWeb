@@ -1,0 +1,13 @@
+﻿<RadzenFormField Text="@Title" Style="@Style" @onclick="OnClick">
+    <FluentCard Class="@CardClass" Width="100%" Height="100%">
+        @ChildContent
+    </FluentCard>
+</RadzenFormField>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string CardClass { get; set; } = "rz-p-1";
+    [Parameter] public virtual string? Style { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+}
